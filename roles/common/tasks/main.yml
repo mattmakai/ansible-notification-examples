@@ -1,0 +1,14 @@
+---
+# this playbook contains the main tasks we want to run
+- name: download a .tar.gz file
+  get_url: url={{ site_tarball }}
+           dest={{ file_dest }}
+  ignore_errors: yes
+
+- name: check if file now exists
+  stat: path={{ file_dest }}
+  register: download_file
+
+- include: twilio_alert.yml
+- include: hipchat_alert.yml
+

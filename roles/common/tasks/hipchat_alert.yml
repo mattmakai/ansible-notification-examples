@@ -1,0 +1,9 @@
+
+- name: send alert to hipchat if file not downloaded
+  local_action: hipchat
+            token={{ hipchat_auth_token }}
+            room={{ hipchat_room }}
+            msg="Deployment failed to download file from {{ site_tarball }}." 
+  when: not download_file.stat.exists
+
+

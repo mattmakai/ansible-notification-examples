@@ -1,0 +1,9 @@
+
+- name: send alert phone a text if file not created
+  local_action: twilio
+            account_sid={{ twilio_account_sid }}
+            auth_token={{ twilio_auth_token }}
+            msg="Failed to download file from {{ site_tarball }}." 
+            from_number={{ twilio_number }}
+            to_number={{ alert_number }}
+  when: not download_file.stat.exists

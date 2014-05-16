@@ -1,0 +1,14 @@
+---
+# variables applicable to all host groups
+site_tarball: https://github.com/makaimc/fullstackpython.github.com/tarbal/gh-pages
+
+# update this path and filename with the save destination
+file_dest: /home/matt/devel/py/full-stack-python.tar.gz
+
+twilio_account_sid: "{{lookup('env','TWILIO_ACCOUNT_SID')}}"
+twilio_auth_token: "{{lookup('env','TWILIO_AUTH_TOKEN')}}"
+twilio_number: "{{lookup('env','TWILIO_NUMBER')}}"
+alert_number: "{{lookup('env','ALERT_NUMBER')}}"
+
+hipchat_auth_token: "{{lookup('env','HIPCHAT_AUTH_TOKEN')}}"
+hipchat_room: "{{lookup('env', 'HIPCHAT_ROOM')}}"

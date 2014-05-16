@@ -1,0 +1,2 @@
+# Ansible 1.6+ required
+Ansible==1.6.1
