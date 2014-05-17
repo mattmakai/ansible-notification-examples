@@ -42,9 +42,9 @@ options:
     description:
       the address in the "from" field for the email
     required: true
-  to_address:
+  to_addresses:
     description:
-      one or more recipient email addresses
+      a list with one or more recipient email addresses
     required: true
   subject:
     description:
@@ -61,9 +61,21 @@ EXAMPLES = '''
       username={{ sendgrid_username }}
       password={{ sendgrid_password }}
       from_address="ansible@mycompany.com"
-      to_address=["ops@mycompany.com",]
+      to_addresses:
+        - "ops@mycompany.com"
       subject="Deployment success."
       body="The most recent Ansible deployment was successful."
+
+# send an email to more than one recipient that the build failed
+- local_action: sendgrid 
+      username={{ sendgrid_username }}
+      password={{ sendgrid_password }}
+      from_address="build@mycompany.com"
+      to_addresses:
+        - "ops@mycompany.com"
+        - "devteam@mycompany.com"
+      subject="Build failure!."
+      body="Unable to pull source repository from Git server."
 '''
 
 # =======================================
@@ -76,13 +88,17 @@ except ImportError:
 
 import base64
 
-def post_sendgrid_api(module, username, password, from_address, to_address,
+def post_sendgrid_api(module, username, password, from_address, to_addresses,
         subject, body):
     SENDGRID_URI = "https://api.sendgrid.com/api/mail.send.json"
     AGENT = "Ansible/1.7"
-    data = {'api_user':username, 'api_key':password, 'to':to_address,
+    data = {'api_user':username, 'api_key':password, 
             'from':from_address, 'subject': subject, 'text': body}
     encoded_data = urllib.urlencode(data)
+    to_addresses_api = ''
+    for recipient in to_addresses:
+        to_addresses_api += '&to[]=%s' % str(recipient)
+    encoded_data += to_addresses_api
     request = urllib2.Request(SENDGRID_URI)
     request.add_header('User-Agent', AGENT)
     request.add_header('Content-type', 'application/x-www-form-urlencoded')
@@ -98,9 +114,9 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             username=dict(required=True),
-            password=dict(required=True),
+            password=dict(required=True, no_log=True),
             from_address=dict(required=True),
-            to_address=dict(required=True),
+            to_addresses=dict(required=True, type='list'),
             subject=dict(required=True),
             body=dict(required=True),
         ),
@@ -110,16 +126,15 @@ def main():
     username = module.params['username']
     password = module.params['password']
     from_address = module.params['from_address']
-    to_address = module.params['to_address']
+    to_addresses = module.params['to_addresses']
     subject = module.params['subject']
     body = module.params['body']
 
     try:
         response = post_sendgrid_api(module, username, password, 
-            from_address, to_address, subject, body)
+            from_address, to_addresses, subject, body)
     except Exception, e:
-        module.fail_json(msg="unable to send email to %s, " + \
-            "with the error of %s" % (to_address, str(e)))
+        module.fail_json(msg="unable to send email through SendGrid API")
 
     module.exit_json(msg=subject, changed=False) 
 

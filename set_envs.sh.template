@@ -21,4 +21,6 @@ export MAIL_TO_ADDRESS=''       # format: ops@mycompany.com
 export SENDGRID_USERNAME=''     # format: mattmakai
 export SENDGRID_PASSWORD=''     # your literal SendGrid password, not a token
 export SENDGRID_FROM_ADDRESS='' # format: ansible@mycompany.com
-export SENDGRID_TO_ADDRESS=''   # format: ops@mycompany.com
+# normally, you'd just create a list in your YAML file
+export SENDGRID_TO_ADDRESS1='mmakai@twilio.com' 
+export SENDGRID_TO_ADDRESS2='makaimc@gmail.com'

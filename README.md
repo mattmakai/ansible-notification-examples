@@ -7,6 +7,8 @@ as of Ansible 1.6.1 release.
 * <a href="http://docs.ansible.com/mail_module.html">mail</a>
 * <a href="http://docs.ansible.com/twilio_module.html">Twilio</a>
 
+Experimental Sendgrid module
+
 ## Walkthrough
 Copy set\_envs.sh.template to set\envs.sh and fill in your environment 
 variables. 

@@ -26,5 +26,7 @@ mail_subject: "Ansible notification"
 sendgrid_username: "{{lookup('env','SENDGRID_USERNAME')}}"
 sendgrid_password: "{{lookup('env','SENDGRID_PASSWORD')}}"
 sendgrid_from_address: "{{lookup('env','SENDGRID_FROM_ADDRESS')}}"
-sendgrid_to_address: "{{lookup('env','SENDGRID_TO_ADDRESS')}}"
+sendgrid_to_addresses: 
+  - "{{lookup('env','SENDGRID_TO_ADDRESS1')}}"
+  - "{{lookup('env','SENDGRID_TO_ADDRESS2')}}"
 sendgrid_subject: "Ansible notification"
