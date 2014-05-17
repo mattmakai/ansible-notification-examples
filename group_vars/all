@@ -3,7 +3,7 @@
 site_tarball: https://github.com/makaimc/fullstackpython.github.com/tarball/gh-pages
 
 # update this path and filename with the save destination
-file_dest: /home/matt/devel/py/full-stack-python.tar.gz
+file_dest: /home/matt/devel/py/ansible-notification-examples/full-stack-python.tar.gz
 
 # Twilio variables
 twilio_account_sid: "{{lookup('env','TWILIO_ACCOUNT_SID')}}"
