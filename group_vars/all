@@ -5,10 +5,19 @@ site_tarball: https://github.com/makaimc/fullstackpython.github.com/tarbal/gh-pa
 # update this path and filename with the save destination
 file_dest: /home/matt/devel/py/full-stack-python.tar.gz
 
+# Twilio variables
 twilio_account_sid: "{{lookup('env','TWILIO_ACCOUNT_SID')}}"
 twilio_auth_token: "{{lookup('env','TWILIO_AUTH_TOKEN')}}"
 twilio_number: "{{lookup('env','TWILIO_NUMBER')}}"
 alert_number: "{{lookup('env','ALERT_NUMBER')}}"
 
+# Hipchat variables
 hipchat_auth_token: "{{lookup('env','HIPCHAT_AUTH_TOKEN')}}"
-hipchat_room: "{{lookup('env', 'HIPCHAT_ROOM')}}"
+hipchat_room: "{{lookup('env','HIPCHAT_ROOM')}}"
+
+# mail variables
+mail_host: "{{lookup('env','MAIL_HOST')}}"
+mail_port: "{{lookup('env','MAIL_PORT')}}"
+mail_subject: "Ansible notification"
+mail_from: "{{lookup('env', 'MAIL_FROM_ADDRESS')}}"
+mail_to: "{{lookup('env', 'MAIL_TO_ADDRESS')}}"

@@ -1,0 +1,10 @@
+
+- name: send email if file not downloaded
+  local_action: mail
+                host={{ mail_host }}
+                port={{ mail_port }}
+                subject="{{ mail_subject }}"
+                body="Failed to download file from {{ site_tarball }}." 
+                from="{{ mail_from }}"
+                to="{{ mail_to }}"
+  when: not download_file.stat.exists
