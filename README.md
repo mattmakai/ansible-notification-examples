@@ -3,9 +3,9 @@ This project provides examples for many of the Ansible notification modules
 as of Ansible 1.6.1 release.
 
 ## Modules
-* Hipchat
-* mail
-* Twilio
+* <a href="http://docs.ansible.com/hipchat_module.html">Hipchat</a>
+* <a href="http://docs.ansible.com/mail_module.html">mail</a>
+* <a href="http://docs.ansible.com/twilio_module.html">Twilio</a>
 
 ## Walkthrough
 Copy set\_envs.sh.template to set\envs.sh and fill in your environment 
