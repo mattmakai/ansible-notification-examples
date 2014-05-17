@@ -10,6 +10,6 @@
   register: download_file
 
 # - include: hipchat_alert.yml
-- include: mail_alert.yml
-# - include: twilio_alert.yml
+# - include: mail_alert.yml
+- include: twilio_alert.yml
 
