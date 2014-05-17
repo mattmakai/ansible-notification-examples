@@ -3,13 +3,13 @@
 - name: download a .tar.gz file
   get_url: url={{ site_tarball }}
            dest={{ file_dest }}
-#  ignore_errors: yes
+  ignore_errors: yes
 
-#- name: check if file now exists
-#  stat: path={{ file_dest }}
-#  register: download_file
+- name: check if file now exists
+  stat: path={{ file_dest }}
+  register: download_file
 
 # - include: hipchat_alert.yml
 # - include: mail_alert.yml
-# - include: twilio_alert.yml
-
+ #- include: twilio_alert.yml
+- include: sendgrid_alert.yml

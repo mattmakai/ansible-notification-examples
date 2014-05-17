@@ -2,17 +2,23 @@
 export ANSIBLE_HOSTS=/home/myuser/devel/ate/hosts
 
 # Twilio account keys
-export TWILIO_ACCOUNT_SID=''  # found on your Twilio account page
-export TWILIO_AUTH_TOKEN=''   # also found on Twilio account page, keep secret!
-export TWILIO_NUMBER=''       # format: +12025551234
-export ALERT_NUMBER=''        # format: +12025551234
+export TWILIO_ACCOUNT_SID=''    # found on your Twilio account page
+export TWILIO_AUTH_TOKEN=''     # found on Twilio account page, keep secret!
+export TWILIO_NUMBER=''         # format: +12025551234
+export ALERT_NUMBER=''          # format: +12025551234
 
 # Hipchat token - this MUST be the v1 API token, not v2
 export HIPCHAT_AUTH_TOKEN=''
 export HIPCHAT_ROOM=''
 
 # mail settings
-export MAIL_HOST='127.0.0.1'  # or change to remote server if not localhost
-export MAIL_PORT=25           # format: 25
-export MAIL_FROM_ADDRESS=''   # format: ansible.build@gmail.com
-export MAIL_TO_ADDRESS=''     # format: matthew.makai@gmail.com
+export MAIL_HOST='127.0.0.1'    # or change to remote server if not localhost
+export MAIL_PORT=25             # format: 25
+export MAIL_FROM_ADDRESS=''     # format: ansible@mycompany.com
+export MAIL_TO_ADDRESS=''       # format: ops@mycompany.com
+
+# Sendgrid settings
+export SENDGRID_USERNAME=''     # format: mattmakai
+export SENDGRID_PASSWORD=''     # your literal SendGrid password, not a token
+export SENDGRID_FROM_ADDRESS='' # format: ansible@mycompany.com
+export SENDGRID_TO_ADDRESS=''   # format: ops@mycompany.com
