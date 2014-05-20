@@ -1,16 +1,4 @@
 
-#- name: send email via SendGrid if file not downloaded
-#  local_action: sendgrid
-#                username={{ sendgrid_username }}
-#                password={{ sendgrid_password }}
-#                from_address="{{ sendgrid_from_address }}"
-#                to_addresses="{{ sendgrid_to_addresses }}"
-#                subject="{{ sendgrid_subject }}"
-#                body="Failed to download file from {{ site_tarball }}." 
-#  when: not download_file.stat.exists
-                
-#                to_addresses="makaimc@gmail.com","mmakai@twilio.com"
-
 - name: send email via SendGrid if file not downloaded
   local_action: 
     module: sendgrid
