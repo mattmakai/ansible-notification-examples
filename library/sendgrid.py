@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# (c) 2014, Matt Makai <matthew.makai@gmail.com>
+# (c) 2015, Matt Makai <matthew.makai@gmail.com>
 #
 # This file is part of Ansible
 #
@@ -20,15 +20,17 @@
 
 DOCUMENTATION = '''
 ---
-version_added: "1.7"
+version_added: "2.0"
 module: sendgrid
 short_description: Sends an email with the SendGrid API
 description:
    - Sends an email with a SendGrid account through their API, not through
      the SMTP service.
 notes:
-   - Like the other notification modules, this one requires an external 
-     dependency to work. In this case, you'll need an active SendGrid 
+   - This module is non-idempotent because it sends an email through the
+     external API. It is idempotent only in the case that the module fails.
+   - Like the other notification modules, this one requires an external
+     dependency to work. In this case, you'll need an active SendGrid
      account.
 options:
   username:
@@ -50,32 +52,33 @@ options:
     description:
       the desired subject for the email
     required: true
-  
-requirements: [ urllib, urllib2 ]
+
 author: Matt Makai
 '''
 
 EXAMPLES = '''
 # send an email to a single recipient that the deployment was successful
-- local_action: sendgrid 
-      username={{ sendgrid_username }}
-      password={{ sendgrid_password }}
-      from_address="ansible@mycompany.com"
-      to_addresses:
-        - "ops@mycompany.com"
-      subject="Deployment success."
-      body="The most recent Ansible deployment was successful."
+- sendgrid:
+    username: "{{ sendgrid_username }}"
+    password: "{{ sendgrid_password }}"
+    from_address: "ansible@mycompany.com"
+    to_addresses:
+      - "ops@mycompany.com"
+    subject: "Deployment success."
+    body: "The most recent Ansible deployment was successful."
+  delegate_to: localhost
 
 # send an email to more than one recipient that the build failed
-- local_action: sendgrid 
-      username={{ sendgrid_username }}
-      password={{ sendgrid_password }}
-      from_address="build@mycompany.com"
+- sendgrid
+      username: "{{ sendgrid_username }}"
+      password: "{{ sendgrid_password }}"
+      from_address: "build@mycompany.com"
       to_addresses:
         - "ops@mycompany.com"
         - "devteam@mycompany.com"
-      subject="Build failure!."
-      body="Unable to pull source repository from Git server."
+      subject: "Build failure!."
+      body: "Unable to pull source repository from Git server."
+  delegate_to: localhost
 '''
 
 # =======================================
@@ -91,13 +94,15 @@ import base64
 def post_sendgrid_api(module, username, password, from_address, to_addresses,
         subject, body):
     SENDGRID_URI = "https://api.sendgrid.com/api/mail.send.json"
-    AGENT = "Ansible/1.7"
-    data = {'api_user':username, 'api_key':password, 
+    AGENT = "Ansible"
+    data = {'api_user': username, 'api_key':password,
             'from':from_address, 'subject': subject, 'text': body}
     encoded_data = urllib.urlencode(data)
     to_addresses_api = ''
     for recipient in to_addresses:
-        to_addresses_api += '&to[]=%s' % str(recipient)
+        if isinstance(recipient, unicode):
+            recipient = recipient.encode('utf-8')
+        to_addresses_api += '&to[]=%s' % recipient
     encoded_data += to_addresses_api
     request = urllib2.Request(SENDGRID_URI)
     request.add_header('User-Agent', AGENT)
@@ -122,7 +127,7 @@ def main():
         ),
         supports_check_mode=True
     )
-  
+
     username = module.params['username']
     password = module.params['password']
     from_address = module.params['from_address']
@@ -131,12 +136,12 @@ def main():
     body = module.params['body']
 
     try:
-        response = post_sendgrid_api(module, username, password, 
+        response = post_sendgrid_api(module, username, password,
             from_address, to_addresses, subject, body)
-    except Exception, e:
+    except Exception:
         module.fail_json(msg="unable to send email through SendGrid API")
 
-    module.exit_json(msg=subject, changed=False) 
+    module.exit_json(msg=subject, changed=False)
 
 # import module snippets
 from ansible.module_utils.basic import *
